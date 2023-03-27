@@ -1,15 +1,16 @@
 package com.restservice.RestServiceTask.controller;
 
+import com.restservice.RestServiceTask.exception.RecordCountNotFoundException;
+import com.restservice.RestServiceTask.exception.TransformStringNotCompleted;
 import com.restservice.RestServiceTask.service.StringConversionService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
@@ -20,25 +21,17 @@ public class StringConversionController {
 
 
     @PostMapping("/transform")
-    public ResponseEntity transformString(@RequestBody Map<String, ArrayList<Character>> text){
-        try {
-            String res = stringConversionService.TransformStrings(text.get("text")).toString();
-            return new ResponseEntity<>(Collections.singletonMap("Result Transform", res), HttpStatus.OK);
-        } catch (Exception ex){
-            return ResponseEntity.badRequest().body("Server is not alive !");
-        }
+    public Map<String, String> transformString(@RequestBody Map<String, ArrayList<Character>> text){
+        return Optional.of(Collections.singletonMap("Result Transform", stringConversionService.TransformStrings(text.get("text"))
+                .getConvertedString())).orElseThrow( () -> new TransformStringNotCompleted("Transform error !")
+            );
     }
 
     @GetMapping("/count")
-    public ResponseEntity countRecord(){
-        try {
-            return new ResponseEntity(
-                    Collections.singletonMap("Count Record", stringConversionService.getCountRecord()),
-                    HttpStatus.OK
-            );
-        } catch (Exception ex){
-            return ResponseEntity.badRequest().body("Error !");
-        }
+    public Map<String, Long> countRecord(){
+        Optional<Long> res = Optional.ofNullable(stringConversionService.getCountRecord());
+        return Optional.of(Collections.singletonMap("Count Record", stringConversionService.getCountRecord())).orElseThrow(
+                () -> new RecordCountNotFoundException("Record count not found"));
     }
 
 

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -23,15 +24,14 @@ public class StringConversionService {
     private final String CONSONANTS_STRING = "бвгджзйклмнпрстфхцчшщ";
 
 
-    public Long getCountRecord() throws Exception {
+    public Long getCountRecord()  {
         return stringConversionRepo.count();
     }
 
-    public StringConversionDTO TransformStrings(ArrayList<Character> text) throws Exception{
+    public StringConversionDTO TransformStrings(ArrayList<Character> text) {
         StringBuilder res = new StringBuilder();
         String originalText = text.stream().map(e->e.toString()).reduce((acc,e) -> acc + e).get();
         StringConversionEntity resQuery = stringConversionRepo.findByOriginalString(originalText);
-
         if (resQuery != null ){
             return stringConversionMapper.toDTO(resQuery);
         } else {
