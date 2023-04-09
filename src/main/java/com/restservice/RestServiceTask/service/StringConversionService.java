@@ -1,8 +1,11 @@
 package com.restservice.RestServiceTask.service;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
 import com.restservice.RestServiceTask.dto.StringConversionDTO;
 import com.restservice.RestServiceTask.entity.StringConversionEntity;
-import com.restservice.RestServiceTask.mapper.StringConversionMapper;
+import com.restservice.RestServiceTask.exception.mapper.StringConversionMapper;
 import com.restservice.RestServiceTask.repository.StringConversionRepo;
 import lombok.AllArgsConstructor;
 
@@ -10,8 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -22,6 +25,8 @@ public class StringConversionService {
     private final StringConversionMapper stringConversionMapper;
 
     private final String CONSONANTS_STRING = "бвгджзйклмнпрстфхцчшщ";
+
+    private final Gson gsonRWJson = new Gson();
 
 
     public Long getCountRecord()  {
@@ -52,6 +57,15 @@ public class StringConversionService {
             stringConversionRepo.save(resQuery);
             return stringConversionMapper.toDTO(resQuery);
         }
+    }
+
+    public JsonArray getAllRecords(){
+        List<StringConversionEntity> res = stringConversionRepo.findAll();
+        JsonArray result = (JsonArray) new Gson()
+                .toJsonTree(
+                        res,
+                        new TypeToken<List<StringConversionEntity>>(){}.getType());
+        return result;
     }
 
 

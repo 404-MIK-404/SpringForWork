@@ -1,4 +1,4 @@
-package com.restservice.RestServiceTask.mapper;
+package com.restservice.RestServiceTask.exception.mapper;
 
 import com.restservice.RestServiceTask.dto.StringConversionDTO;
 import com.restservice.RestServiceTask.entity.StringConversionEntity;
