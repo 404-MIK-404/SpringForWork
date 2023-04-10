@@ -28,6 +28,8 @@ public class StringConversionEntity {
     @Column(name = "converted_string")
     private String convertedString;
 
+    @OneToOne(mappedBy = "idConversion")
+    private MessageEntity messageEntity;
 
 
 }

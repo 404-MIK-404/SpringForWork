@@ -10,4 +10,6 @@ public interface StringConversionMapper {
 
     StringConversionDTO toDTO(StringConversionEntity stringConversionEntity);
 
+
+
 }

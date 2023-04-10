@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -60,11 +61,10 @@ public class StringConversionService {
     }
 
     public JsonArray getAllRecords(){
-        List<StringConversionEntity> res = stringConversionRepo.findAll();
+        List<StringConversionDTO> res = stringConversionRepo.findAll().stream()
+                .map(stringConversionMapper::toDTO).collect(Collectors.toList());
         JsonArray result = (JsonArray) new Gson()
-                .toJsonTree(
-                        res,
-                        new TypeToken<List<StringConversionEntity>>(){}.getType());
+                .toJsonTree(res, new TypeToken<List<StringConversionDTO>>(){}.getType());
         return result;
     }
 

@@ -1,7 +1,10 @@
 package com.restservice.RestServiceTask.dto;
 
+import com.restservice.RestServiceTask.entity.MessageEntity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.Date;
 
 @Getter
 @Setter
@@ -11,6 +14,14 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StringConversionDTO {
 
+    private Long id;
+
+    private Date dateSave;
+
+    private String originalString;
+
     private String convertedString;
+
+    private MessageDTO messageEntity;
 
 }
